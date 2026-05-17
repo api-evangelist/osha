@@ -39,7 +39,7 @@ common:
     url: https://www.osha.gov/data/
   - type: Support
     url: https://www.osha.gov/contactus/
-  - type: Privacy Policy
+  - type: PrivacyPolicy
     url: https://www.osha.gov/privacy-policy
 maintainers:
   - FN: Kin Lane
