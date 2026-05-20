@@ -33,6 +33,8 @@ apis:
       - type: Documentation
         url: https://enforcedata.dol.gov/
 common:
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/osha
   - type: Website
     url: https://www.osha.gov/
   - type: Documentation
