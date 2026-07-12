@@ -33,6 +33,8 @@ apis:
       - type: Documentation
         url: https://enforcedata.dol.gov/
 common:
+  - type: DomainSecurity
+    url: security/osha-domain-security.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/osha
   - type: Website
@@ -43,6 +45,8 @@ common:
     url: https://www.osha.gov/contactus/
   - type: PrivacyPolicy
     url: https://www.osha.gov/privacy-policy
+  - url: https://www.osha.gov/rss.xml
+    type: Blog
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
