@@ -1,0 +1,109 @@
+generated: '2026-08-27'
+method: searched
+source: https://usdepartmentoflabor.github.io/Developer/sdk/
+ownership_note: >-
+  OSHA publishes no client library of its own. The SDKs below are published by OSHA's
+  parent department, the U.S. Department of Labor, on the USDepartmentofLabor GitHub org,
+  and they are the documented clients for the DOL data API that serves the OSHA
+  Enforcement datasets (accident, inspection, violation, ...) this repo catalogs. They are
+  recorded here as first-party to the OSHA Enforcement Data API surface, NOT as OSHA-authored
+  libraries, and they do not cover the OSHA-owned Injury Tracking Application (ITA) API at
+  www.osha.gov/oshaApi/v1, which ships no SDK at all.
+registry_note: >-
+  None of the eight SDKs is published to any package registry. npm, PyPI, RubyGems
+  (dol_data_sdk -> 404), Packagist (usdepartmentoflabor/php_doldatasdk -> 404), NuGet,
+  crates.io and pkg.go.dev were all checked and hold nothing. Distribution is
+  git-clone / direct download from GitHub only, so there is no version metadata endpoint
+  to read; `version: null` below is "checked, nothing published", not "not checked".
+decay_signal: >-
+  ALL EIGHT repositories are ARCHIVED (read-only) on GitHub. The most recent push to any
+  of them is 2017-02-16 (PHP); five were last touched in 2015. The API they wrap is still
+  documented as current on the DOL developer portal, so every published client for the
+  OSHA enforcement data surface has been frozen for eight to eleven years.
+packages:
+  - language: ruby
+    registry: github
+    name: Ruby_DOLDataSDK
+    url: https://github.com/USDepartmentofLabor/Ruby_DOLDataSDK
+    install: git clone https://github.com/USDepartmentofLabor/Ruby_DOLDataSDK
+    official: true
+    version: null
+    published: '2017-01-11'
+    archived: true
+    note: Not on RubyGems (rubygems.org/api/v1/gems/dol_data_sdk.json -> 404). Date is the last push to the archived repo.
+  - language: php
+    registry: github
+    name: PHP_DOLDataSDK
+    url: https://github.com/USDepartmentofLabor/PHP_DOLDataSDK
+    install: git clone https://github.com/USDepartmentofLabor/PHP_DOLDataSDK
+    official: true
+    version: null
+    published: '2017-02-16'
+    archived: true
+    note: Not on Packagist (repo.packagist.org -> 404). Date is the last push to the archived repo.
+  - language: swift
+    registry: github
+    name: Swift-Federal-Data-SDK
+    url: https://github.com/USDepartmentofLabor/Swift-Federal-Data-SDK
+    install: git clone https://github.com/USDepartmentofLabor/Swift-Federal-Data-SDK
+    official: true
+    version: null
+    published: '2016-11-04'
+    archived: true
+    note: No CocoaPods/SwiftPM registry entry found. Date is the last push to the archived repo.
+  - language: objective-c
+    registry: github
+    name: DOLDataSDK-iOS
+    url: https://github.com/USDepartmentofLabor/DOLDataSDK-iOS
+    install: git clone https://github.com/USDepartmentofLabor/DOLDataSDK-iOS
+    official: true
+    version: null
+    published: '2015-07-30'
+    archived: true
+    note: Not on CocoaPods. Date is the last push to the archived repo.
+  - language: java
+    registry: github
+    name: Android_DOLDataSDK
+    url: https://github.com/USDepartmentofLabor/Android_DOLDataSDK
+    install: git clone https://github.com/USDepartmentofLabor/Android_DOLDataSDK
+    official: true
+    version: null
+    published: '2015-06-22'
+    archived: true
+    note: Not on Maven Central. Date is the last push to the archived repo.
+  - language: csharp
+    registry: github
+    name: DotNet_DOLDataSDK
+    url: https://github.com/USDepartmentofLabor/DotNet_DOLDataSDK
+    install: git clone https://github.com/USDepartmentofLabor/DotNet_DOLDataSDK
+    official: true
+    version: null
+    published: '2015-06-18'
+    archived: true
+    note: Not on NuGet. Date is the last push to the archived repo.
+  - language: coldfusion
+    registry: github
+    name: ColdFusion-Federal-SDK
+    url: https://github.com/USDepartmentofLabor/ColdFusion-Federal-SDK
+    install: git clone https://github.com/USDepartmentofLabor/ColdFusion-Federal-SDK
+    official: true
+    version: null
+    published: '2015-06-05'
+    archived: true
+    license: Unlicense
+    note: Only one of the eight carrying an SPDX license. Date is the last push to the archived repo.
+  - language: java
+    registry: github
+    name: BlackBerry_DOLDataSDK
+    url: https://github.com/USDepartmentofLabor/BlackBerry_DOLDataSDK
+    install: git clone https://github.com/USDepartmentofLabor/BlackBerry_DOLDataSDK
+    official: true
+    version: null
+    published: '2015-08-13'
+    archived: true
+    note: Targets a discontinued platform. Date is the last push to the archived repo.
+x-evidence:
+  - {url: 'https://usdepartmentoflabor.github.io/Developer/sdk/', status: 200, fetched: '2026-08-27'}
+  - {url: 'https://api.github.com/repos/USDepartmentofLabor/Ruby_DOLDataSDK', status: 200, fetched: '2026-08-27'}
+  - {url: 'https://rubygems.org/api/v1/gems/dol_data_sdk.json', status: 404, fetched: '2026-08-27'}
+  - {url: 'https://repo.packagist.org/p2/usdepartmentoflabor/php_doldatasdk.json', status: 404, fetched: '2026-08-27'}

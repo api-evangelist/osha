@@ -1,0 +1,142 @@
+generated: '2026-08-27'
+method: searched
+source:
+  - https://www.osha.gov/sites/default/files/ita/documentation/osha_injury-tracking-application-api-documentation-v1.pdf
+  - https://usdepartmentoflabor.github.io/Developer/experienced/
+  - https://usdepartmentoflabor.github.io/Developer/health-and-safety/dol-osha-enforcement/
+note: >-
+  Cross-cutting semantics for the two API surfaces OSHA data reaches: the OSHA-owned Injury
+  Tracking Application (ITA) write API at www.osha.gov/oshaApi/v1, and the read-only DOL
+  enforcement data API at data.dol.gov/get/ that publishes OSHA inspection, violation and
+  accident records. Captured from published documentation; neither surface has an OpenAPI.
+authentication:
+  style: bearer token (ITA) / api key header X-API-KEY (DOL data) / api key query KEY (DOL OData)
+  see: authentication/osha-authentication.yml
+versioning:
+  scheme: uri-path
+  current: v1
+  example: https://www.osha.gov/oshaApi/v1/establishments
+  policy_url: null
+  note: >-
+    ITA has carried /v1/ since 2017 and has never shipped a v2. The DOL surfaces version by
+    HOST rather than by path — api.dol.gov/V1 is the legacy OData producer, data.dol.gov/get
+    the newer REST interface — with no documented deprecation bridge between them.
+pagination:
+  applies_to: DOL enforcement data API (data.dol.gov/get/)
+  style: limit-offset
+  params: [limit, offset]
+  form: path segments, e.g. https://data.dol.gov/get/inspection/limit/200/offset/200
+  default_page_size: 100
+  max_page_size: 200
+  response_fields: []
+  note: >-
+    "The following datasets use offset for pagination so you can gather more than the limit
+    of 200 records." No total-count, next-link or cursor is documented. The ITA API documents
+    no pagination at all — GET /establishments returns the caller's own establishments.
+content_negotiation:
+  data_dol_gov:
+    default: json
+    override: path suffix /format/xml or /format/json
+  api_dol_gov:
+    default: xml
+    override: 'Accept: application/json'
+  ita:
+    default: json
+    override: null
+error_envelope:
+  style: envelope
+  fields:
+    success: Boolean — the request reached the ITA service and no fatal error occurred.
+    errors: Array of validation errors found while creating or editing the resource; a non-empty array means the resource was NOT created or edited.
+  problem_json: false
+  rfc9457: false
+  see: errors/osha-problem-types.yml
+hypermedia:
+  present: true
+  field: links
+  detail: >-
+    ITA responses carry a links array — self, plus establishment / form300ALinks / submissions
+    cross-references, so an establishment response links to its 300A forms and its submissions.
+    This is the only machine-navigable affordance either surface publishes.
+idempotency:
+  supported: false
+  detail: >-
+    No Idempotency-Key header, no client-supplied request id, no documented replay semantics
+    on any OSHA or DOL endpoint. The nearest thing is a uniqueness constraint —
+    establishment_name "must be unique" — which rejects a duplicate rather than replaying it,
+    and re-running Submit deliberately OVERWRITES the prior submission rather than being a
+    no-op. An agent retrying a failed POST /establishments or POST /submissions cannot know
+    whether the first attempt landed.
+  header: null
+request_tracing:
+  supported: false
+  detail: >-
+    No request-id or correlation header is documented on either surface. OSHA's own help
+    process compensates for this by asking submitters to paste the request URL, request body
+    and response into a help-desk ticket at
+    https://www.osha.gov/injuryreporting/ita/help-request-form.
+rate_limit_signaling:
+  supported: false
+  see: rate-limits/osha-rate-limits.yml
+field_expansion:
+  supported: false
+sparse_fieldsets:
+  supported: false
+metadata:
+  supported: false
+bulk:
+  supported: true
+  detail: >-
+    Every ITA create/edit endpoint accepts either a single JSON object or an ARRAY of objects,
+    so one POST can create many establishments or add many 300A forms. Errors are reported per
+    object in the response, not as a single transaction outcome — a partial success is possible
+    and the caller must read errors[] per element.
+reversibility:
+  applicability: write-surface
+  grade: documented
+  grade_basis: >-
+    Reversal paths exist and are documented for every ITA write, but OSHA publishes no window
+    inside which any of them works — no correction deadline, no retention period, no
+    point after which a submitted year is closed. Per the pipeline rubric that is `documented`
+    (0.4), not `verified` (1.0). No window is asserted here because the provider states none.
+  surfaces:
+    - write: Create establishment(s) — POST https://www.osha.gov/oshaApi/v1/establishments
+      reversal: soft-delete via edit
+      operation: PUT https://www.osha.gov/oshaApi/v1/establishments/{establishment id}
+      detail: >-
+        Set establishment_status to 2 (Removed / Inactive). There is no DELETE verb on the API;
+        removal is a status transition, and the establishment record persists.
+      window: null
+      docs: https://www.osha.gov/sites/default/files/ita/documentation/osha_injury-tracking-application-api-documentation-v1.pdf
+    - write: Add Form 300A data — POST https://www.osha.gov/oshaApi/v1/forms/form300A
+      reversal: edit in place
+      operation: PUT https://www.osha.gov/oshaApi/v1/forms/form300A/{Form 300A id}
+      detail: Form 300A values are corrected by editing the form, not by voiding it. No delete is documented.
+      window: null
+      docs: https://www.osha.gov/sites/default/files/ita/documentation/osha_injury-tracking-application-api-documentation-v1.pdf
+    - write: Add case data (Forms 300/301) — POST https://www.osha.gov/oshaApi/v1/forms/caseData
+      reversal: edit in place
+      operation: PATCH https://www.osha.gov/oshaApi/v1/forms/caseData/{caseDataId}
+      detail: Case records are amended with PATCH. No delete is documented.
+      window: null
+      docs: https://www.osha.gov/sites/default/files/ita_case_data_api_specifications.pdf
+    - write: Submit 300A data for establishment(s) — POST https://www.osha.gov/oshaApi/v1/submissions
+      reversal: re-submit
+      operation: POST https://www.osha.gov/oshaApi/v1/submissions
+      detail: >-
+        "To re-submit your data (to update or correct it), you will need to re-run the Submit
+        POST request." The submission carries an optional change_reason field (100 chars) for
+        recording why the injury and illness summary was re-submitted. There is no unsubmit,
+        void or withdraw operation — a filing can be superseded but never retracted.
+      window: null
+      docs: https://www.osha.gov/sites/default/files/ita/documentation/osha_injury-tracking-application-api-documentation-v1.pdf
+  agent_note: >-
+    An agent acting on this API should treat POST /submissions as irreversible-forward: it can
+    always be corrected by another submission, never undone. Combined with the absence of any
+    idempotency key, a retried submit is indistinguishable from a deliberate re-filing.
+dry_run_mode:
+  supported: false
+  detail: >-
+    No dry-run or validate-only flag. The published substitute is the separate preview.osha.gov
+    sandbox host, which runs the same validation rules against throwaway data
+    (see sandbox/osha-sandbox.yml).

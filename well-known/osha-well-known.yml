@@ -1,0 +1,79 @@
+generated: '2026-08-27'
+method: probed
+source: live HTTP probes of every host named in apis.yml and in OSHA's published API documentation
+note: >-
+  No /.well-known/ document is served by any OSHA or DOL host. www.osha.gov answers
+  403 (nginx) for /.well-known/* and /llms.txt and 404 for the rest. data.dol.gov,
+  dataportal.dol.gov and api.dol.gov front a React single-page app on S3/CloudFront that
+  returns HTTP 200 with the SAME 11,015-byte HTML shell for EVERY path — including paths
+  that cannot exist — so none of those 200s is a document. hit_count is 0 and no
+  WellKnown / SecurityTxt / AgentCard pointer is emitted.
+hit_count: 0
+soft_404_control:
+  host: https://data.dol.gov
+  path: /.well-known/this-path-cannot-exist-osha-probe
+  status: 200
+  bytes: 11015
+  content_type: text/html
+  verdict: catch-all — every path on this host returns the identical SPA shell
+hosts:
+  - host: https://www.osha.gov
+    documents:
+      - path: /.well-known/security.txt
+        status: 403
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+      - path: /llms.txt
+        status: 403
+  - host: https://data.dol.gov
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        note: SPA catch-all shell (11015 bytes, text/html) — not a document, not counted
+      - path: /.well-known/openid-configuration
+        status: 200
+        note: SPA catch-all shell — not a document
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        note: SPA catch-all shell — not a document
+      - path: /.well-known/api-catalog
+        status: 200
+        note: SPA catch-all shell — not a document
+      - path: /.well-known/ai-plugin.json
+        status: 200
+        note: SPA catch-all shell — not a document
+      - path: /.well-known/agent-card.json
+        status: 200
+        note: SPA catch-all shell — not a document
+      - path: /.well-known/agent.json
+        status: 200
+        note: SPA catch-all shell — not a document
+  - host: https://dataportal.dol.gov
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        note: SPA catch-all shell — not a document
+      - path: /.well-known/api-catalog
+        status: 200
+        note: SPA catch-all shell — not a document
+      - path: /.well-known/agent-card.json
+        status: 200
+        note: SPA catch-all shell — not a document
+      - path: /.well-known/agent.json
+        status: 200
+        note: SPA catch-all shell — not a document
+  - host: https://api.dol.gov
+    documents:
+      - path: /.well-known/agent-card.json
+        status: 403
+        note: AWS API Gateway — MissingAuthenticationToken for every unmatched route

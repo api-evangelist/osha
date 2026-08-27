@@ -1,0 +1,172 @@
+generated: '2026-08-27'
+method: searched
+source:
+  - https://www.osha.gov/sites/default/files/ita/documentation/osha_injury-tracking-application-api-documentation-v1.pdf
+  - https://www.osha.gov/sites/default/files/ita_case_data_api_specifications.pdf
+  - https://usdepartmentoflabor.github.io/Developer/health-and-safety/dol-osha-enforcement/
+note: >-
+  Two disjoint models, one agency. There is no OpenAPI to derive from, so the entities and
+  keys below are transcribed from the published data dictionaries and dataset field lists.
+  Relationships marked `declared` come from a documented link/foreign key; nothing is inferred.
+domains:
+  - id: ita
+    name: Injury Tracking Application (employer-submitted injury and illness records)
+    base_url: https://www.osha.gov/oshaApi/v1
+    access: write, account-scoped — an account sees only its own establishments
+  - id: enforcement
+    name: OSHA Enforcement (inspections, violations, accidents)
+    base_url: https://data.dol.gov/get/
+    access: read-only, public data behind an API key
+entities:
+  - name: Establishment
+    domain: ita
+    endpoint: /establishments
+    id_field: id
+    id_type: integer (system generated)
+    key_fields: [establishment_name, company_name, street, establishment_status, status, years_submitted]
+    notes: >-
+      establishment_name must be unique per account. `status` is filing progress
+      (1 Not Added / 2 In Progress / 3 Submitted); `establishment_status` is record state
+      (1 Active / 2 Removed) and is the only delete affordance on the API.
+  - name: Form300A
+    domain: ita
+    endpoint: /forms/form300A
+    id_field: id
+    key_fields: [establishment_id, no_injuries_illnesses, annual_average_employees, total_hours_worked]
+    notes: Fields are the OSHA Form 300A boxes G-J, K, L and M1-M6; see conformance/osha-conformance.yml.
+  - name: CaseData
+    domain: ita
+    endpoint: /forms/caseData
+    id_field: caseDataId
+    key_fields: [establishmentId]
+    notes: Per-case Forms 300/301 records. Retrievable by case id or by establishment id.
+  - name: Submission
+    domain: ita
+    endpoint: /submissions
+    id_field: id
+    key_fields: [establishment_id, year_filing_for, form300A_id, change_reason]
+    notes: A submission is scoped to one establishment for one filing year; re-submitting supersedes it.
+  - name: Inspection
+    domain: enforcement
+    endpoint: /inspection
+    id_field: activity_nr
+    key_fields: [estab_name, site_address, open_date, close_case_date, insp_type]
+  - name: Violation
+    domain: enforcement
+    endpoint: /violation
+    id_field: citation_id
+    key_fields: [activity_nr, standard, viol_type, current_penalty, issuance_date]
+  - name: ViolationEvent
+    domain: enforcement
+    endpoint: /violation_event
+    key_fields: [activity_nr, citation_id, hist_event, hist_penalty, hist_date]
+  - name: ViolationGeneralDutyStandard
+    domain: enforcement
+    endpoint: /violation_gen_duty_std
+    key_fields: [activity_nr, citation_id, line_nr, line_text]
+  - name: Accident
+    domain: enforcement
+    endpoint: /accident
+    id_field: summary_nr
+    key_fields: [report_id, event_date, event_desc, fatality, abstract_text]
+  - name: AccidentAbstract
+    domain: enforcement
+    endpoint: /accident_abstract
+    key_fields: [summary_nr, line_nr, abstract_text]
+  - name: AccidentInjury
+    domain: enforcement
+    endpoint: /accident_injury
+    key_fields: [summary_nr, rel_insp_nr, age, sex, degree_of_inj, nature_of_inj]
+  - name: RelatedActivity
+    domain: enforcement
+    endpoint: /related_activity
+    key_fields: [activity_nr, rel_type, rel_act_nr]
+  - name: StrategicCodes
+    domain: enforcement
+    endpoint: /strategic_codes
+    key_fields: [activity_nr, prog_type, prog_value]
+  - name: OptionalInfo
+    domain: enforcement
+    endpoint: /optional_info
+    key_fields: [activity_nr, opt_type, opt_id, opt_value]
+relationships:
+  - from: Establishment
+    to: Form300A
+    type: has_many
+    via: links.form300ALinks
+    basis: declared
+  - from: Establishment
+    to: Submission
+    type: has_many
+    via: links.submissions
+    basis: declared
+  - from: Form300A
+    to: Establishment
+    type: belongs_to
+    via: links.establishment
+    basis: declared
+  - from: CaseData
+    to: Establishment
+    type: belongs_to
+    via: establishmentId
+    basis: declared
+  - from: Submission
+    to: Establishment
+    type: belongs_to
+    via: establishment_id
+    basis: declared
+  - from: Submission
+    to: Form300A
+    type: has_one
+    via: form300A_id
+    basis: declared
+  - from: Violation
+    to: Inspection
+    type: belongs_to
+    via: activity_nr
+    basis: declared
+  - from: ViolationEvent
+    to: Violation
+    type: belongs_to
+    via: citation_id
+    basis: declared
+  - from: ViolationGeneralDutyStandard
+    to: Violation
+    type: belongs_to
+    via: citation_id
+    basis: declared
+  - from: RelatedActivity
+    to: Inspection
+    type: belongs_to
+    via: activity_nr
+    basis: declared
+  - from: StrategicCodes
+    to: Inspection
+    type: belongs_to
+    via: activity_nr
+    basis: declared
+  - from: OptionalInfo
+    to: Inspection
+    type: belongs_to
+    via: activity_nr
+    basis: declared
+  - from: AccidentAbstract
+    to: Accident
+    type: belongs_to
+    via: summary_nr
+    basis: declared
+  - from: AccidentInjury
+    to: Accident
+    type: belongs_to
+    via: summary_nr
+    basis: declared
+  - from: AccidentInjury
+    to: Inspection
+    type: belongs_to
+    via: rel_insp_nr
+    basis: declared
+cross_domain_note: >-
+  The ITA model and the enforcement model do not join. An establishment that files a 300A has
+  no key into the inspection record for the same site — the only shared vocabulary is NAICS and
+  the establishment name/address, both of which are free text. An agent cannot programmatically
+  connect what an employer reported to what OSHA inspected.

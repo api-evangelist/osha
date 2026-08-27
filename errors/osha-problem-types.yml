@@ -1,0 +1,55 @@
+generated: '2026-08-27'
+method: searched
+source:
+  - https://www.osha.gov/sites/default/files/ita/documentation/osha_injury-tracking-application-api-documentation-v1.pdf
+  - live probes 2026-08-27
+format: custom-envelope
+format_note: >-
+  Not RFC 9457. Neither OSHA nor DOL returns application/problem+json. The ITA API returns a
+  JSON body carrying a boolean `success` flag and an `errors` array; a non-empty `errors`
+  array means the resource was NOT created or edited, even when the transport call itself
+  succeeded. An agent must read the body, not the status line.
+envelope:
+  success: Boolean — request reached the ITA service and no fatal error occurred.
+  errors: Array of validation errors discovered while creating or editing the resource.
+transport_statuses:
+  - status: 403
+    observed_at: https://www.osha.gov/oshaApi/v1/establishments
+    observed: '2026-08-27'
+    meaning: Missing or invalid Authorization Bearer token on the OSHA ITA API.
+    body: HTML (not JSON) — the edge rejects before the application sees the request.
+  - status: 403
+    observed_at: https://api.dol.gov/V1/DOLAgency/Agencies?KEY=test
+    observed: '2026-08-27'
+    meaning: 'AWS API Gateway rejection: {"message":"Missing Authentication Token"}'
+    body: application/json
+validation_rules:
+  note: >-
+    OSHA publishes the exact cross-field checks the ITA service runs before accepting a Form
+    300A. These are the real failure modes an integrator hits; OSHA does not assign them codes,
+    so they are recorded here verbatim as rules rather than invented as an error registry.
+  rules:
+    - id: sum-injury-types-equals-sum-cases
+      rule: The sum of Injury and Illness Types (Form 300A fields M1-M6) must equal the sum of the Number of Cases (fields G-J).
+    - id: employees-greater-than-cases
+      rule: The Annual Average Number of Employees must be greater than the total number of cases (fields G-J).
+    - id: cases-away-require-days-away
+      rule: If there are cases with days away from work (field H), there must be days away from work (field K).
+    - id: days-away-require-cases-away
+      rule: If there are days away from work (field K), there must be cases with days away from work (field H).
+    - id: days-away-exceed-cases-away
+      rule: Days away from work (field K) must be higher than cases with days away from work (field H).
+    - id: transfer-cases-require-transfer-days
+      rule: If there are cases with job transfer or restriction (field I), there must be days with job transfer or restriction (field L).
+    - id: transfer-days-require-cases
+      rule: If there are days with job transfer or restriction (field L), there must be cases with days away OR job transfer or restriction reported (field H or I).
+    - id: establishment-name-unique
+      rule: establishment_name must be unique within the reporting account.
+    - id: no-po-box
+      rule: The establishment street address should not contain a PO Box address.
+gaps:
+  - No numeric or symbolic error codes are published for either surface.
+  - No error reference page exists; the validation rules above live only inside a PDF.
+  - No RFC 9457 problem+json, no type URIs, no machine-readable remediation.
+  - No documented status-code table (400/401/404/422/429/500) for the ITA API.
+support_path: https://www.osha.gov/injuryreporting/ita/help-request-form

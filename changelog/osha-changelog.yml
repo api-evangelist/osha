@@ -1,0 +1,54 @@
+generated: '2026-08-27'
+method: searched
+source: https://www.osha.gov/sites/default/files/ita/documentation/osha_injury-tracking-application-api-documentation-v1.pdf
+note: >-
+  OSHA publishes no web changelog for its APIs. The only dated change history that exists is
+  the Changelog section printed inside the ITA API documentation PDF, transcribed verbatim
+  below. A second, unrelated changelog covers the DOL developer PORTAL (not the API) and
+  stops in 2015; it is recorded at the bottom for completeness.
+scheme: dated-document-changelog
+current_version: v1
+current_version_note: The document is versioned only by its own revision dates; the API path has been /v1/ throughout.
+changelog_url: null
+entries:
+  - date: '2018-07-16'
+    breaking: true
+    highlights:
+      - Authentication section updated for the new access-token format.
+      - 'Breaking: the pre-2018 ITA API token format was invalidated; every user had to log in to ITA and obtain a new token starting 2018-07-19.'
+  - date: '2018-06-14'
+    breaking: false
+    highlights:
+      - Added the establishment_status field to the Establishment data dictionary.
+      - Added establishment_status to the Edit Establishment(s) request example.
+  - date: '2017-11-06'
+    breaking: true
+    highlights:
+      - 'Breaking: renamed "status" to "establishment_status" in both the Create and Edit Establishment response objects.'
+      - 'Breaking: removed year_filing_for from the Form 300A data dictionary and from the Form 300A request objects.'
+      - Corrected the URL documented under Edit Form 300A.
+      - Updated guidance on submitting Forms 300 and 301 and on using the help-desk form.
+  - date: '2017-08-10'
+    breaking: false
+    highlights:
+      - Documented submitting multiple JSON objects as an array on the create/edit endpoints.
+  - date: '2017-08-01'
+    breaking: false
+    highlights:
+      - Added the testing/sandbox environment (preview.osha.gov) to the documentation.
+  - date: '2017-03-01'
+    breaking: true
+    highlights:
+      - 'Breaking: renamed no_injuries to no_injuries_illnesses in the Add and Edit Form 300A request objects.'
+      - Changed "Not Started" to "Not Added" in the Establishment response data dictionary.
+      - Added establishment ID to the Edit Establishment(s) request object.
+      - Moved all documented API calls to https://.
+      - Corrected the Annual Average Number of Employees validation check.
+related_portal_changelog:
+  url: https://usdepartmentoflabor.github.io/Developer/release-notes/
+  scope: the DOL developer PORTAL website, not the API
+  last_entry: '2015-09-29'
+  first_entry: '2015-03-20'
+  note: >-
+    Semver-tagged (2.0.0 through 2.2.5) but website-only. Its 2015-06-26 entry is the one that
+    introduced the OSHA Enforcement dataset. It has not been updated in eleven years.

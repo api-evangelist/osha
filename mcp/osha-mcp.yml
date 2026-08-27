@@ -1,0 +1,91 @@
+generated: '2026-08-27'
+method: derived
+status: candidate
+source:
+  - https://www.osha.gov/sites/default/files/ita/documentation/osha_injury-tracking-application-api-documentation-v1.pdf
+  - https://usdepartmentoflabor.github.io/Developer/health-and-safety/dol-osha-enforcement/
+note: >-
+  Neither OSHA nor DOL ships an MCP server. Searched the OSHA and DOL sites, the
+  USDepartmentofLabor GitHub org (80 repos, none MCP-related), npm @modelcontextprotocol and
+  the public MCP registries — nothing. The tools below are a CANDIDATE surface derived from
+  OSHA's own published endpoint documentation; no endpoint is asserted and none may be
+  advertised as reachable.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: derived
+server:
+  name: osha
+  transport: null
+  url: null
+tools:
+  - name: create_establishments
+    description: Create one or more reporting establishments in the OSHA Injury Tracking Application.
+    source_operation: 'POST https://www.osha.gov/oshaApi/v1/establishments'
+    write: true
+  - name: list_establishments
+    description: List the establishments belonging to the calling ITA account.
+    source_operation: 'GET https://www.osha.gov/oshaApi/v1/establishments'
+    write: false
+  - name: get_establishment
+    description: Retrieve one establishment by its system-generated id.
+    source_operation: 'GET https://www.osha.gov/oshaApi/v1/establishments/{establishment_id}'
+    write: false
+  - name: edit_establishments
+    description: Edit one or more establishments, including removing one by setting establishment_status to 2.
+    source_operation: 'PUT https://www.osha.gov/oshaApi/v1/establishments/{establishment_id}'
+    write: true
+  - name: add_form_300a
+    description: Add OSHA Form 300A summary data to one or more establishments.
+    source_operation: 'POST https://www.osha.gov/oshaApi/v1/forms/form300A'
+    write: true
+  - name: get_form_300a
+    description: Retrieve a specific Form 300A by id.
+    source_operation: 'GET https://www.osha.gov/oshaApi/v1/forms/form300A/{form300A_id}'
+    write: false
+  - name: edit_form_300a
+    description: Edit Form 300A data for one or more establishments.
+    source_operation: 'PUT https://www.osha.gov/oshaApi/v1/forms/form300A/{form300A_id}'
+    write: true
+  - name: add_case_data
+    description: Add OSHA Form 300/301 case data records.
+    source_operation: 'POST https://www.osha.gov/oshaApi/v1/forms/caseData'
+    write: true
+  - name: get_case_data
+    description: Retrieve a case data record by id.
+    source_operation: 'GET https://www.osha.gov/oshaApi/v1/forms/caseData/{caseDataId}'
+    write: false
+  - name: list_case_data_for_establishment
+    description: List case data records for one establishment.
+    source_operation: 'GET https://www.osha.gov/oshaApi/v1/forms/caseData/establishment/{establishmentId}'
+    write: false
+  - name: edit_case_data
+    description: Amend a case data record.
+    source_operation: 'PATCH https://www.osha.gov/oshaApi/v1/forms/caseData/{caseDataId}'
+    write: true
+  - name: submit_300a
+    description: Submit (or re-submit to correct) Form 300A data for one or more establishments for a filing year.
+    source_operation: 'POST https://www.osha.gov/oshaApi/v1/submissions'
+    write: true
+    caution: >-
+      Irreversible-forward. There is no unsubmit or void operation, and no idempotency key —
+      a retried call is indistinguishable from a deliberate re-filing. See
+      conventions/osha-conventions.yml reversibility.
+  - name: get_submission
+    description: Retrieve a specific submission record.
+    source_operation: 'GET https://www.osha.gov/oshaApi/v1/submissions/{submissionId}'
+    write: false
+  - name: query_osha_enforcement
+    description: Query an OSHA enforcement dataset (inspection, violation, violation_event, violation_gen_duty_std, accident, accident_abstract, accident_injury, related_activity, strategic_codes, optional_info) with limit/offset paging.
+    source_operation: 'GET https://data.dol.gov/get/{table}/limit/{limit}/offset/{offset}'
+    write: false
+    caution: >-
+      Probed 2026-08-27: this path now returns the DOL Open Data Portal single-page-app shell
+      (HTTP 200, text/html) rather than data, and new API token issuance is disabled. Treat as
+      documented-but-unconfirmed.
+blockers:
+  - No OpenAPI exists for either surface, so no tool can inherit a real inputSchema.
+  - ITA credentials are account-gated and DOL token issuance is suspended, so an MCP server would have no way to onboard.

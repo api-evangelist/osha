@@ -1,0 +1,53 @@
+generated: '2026-08-27'
+method: searched
+source:
+  - https://www.osha.gov/sites/default/files/ita/documentation/osha_injury-tracking-application-api-documentation-v1.pdf
+  - https://usdepartmentoflabor.github.io/Developer/release-notes/
+  - live probes 2026-08-27
+versioning:
+  scheme: uri-path
+  current: v1
+  docs: null
+  note: ITA has been on /oshaApi/v1/ since 2017 with no v2 announced.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: >-
+    No published deprecation policy, no RFC 8594 Sunset/Deprecation header support, and no
+    advance-notice commitment on any OSHA or DOL API surface. Retirements are announced in
+    site copy only.
+  observed_retirements:
+    - surface: enforcedata.dol.gov (the Enforcement Data website named as this repo's original API humanURL)
+      status: retired / redirected
+      evidence: 'https://enforcedata.dol.gov/ now 301s to https://data.dol.gov/ (probed 2026-08-27, final status 200)'
+      replacement: https://data.dol.gov/ — the DOL Open Data Portal
+      notice: DOL states it is retiring the Enforcement website in favour of the Open Data Portal and a modernized API.
+      sunset_header: false
+    - surface: DOL API token issuance (https://devtools.dol.gov/developer)
+      status: suspended
+      evidence: 'DOL developer portal states "New API Token Creation is Temporarily Disabled" (fetched 2026-08-27)'
+      impact: >-
+        A new integrator cannot obtain a credential for the OSHA enforcement data API today.
+        This gates the ONLY read API for OSHA inspection/violation/accident data.
+sla:
+  url: null
+  uptime_target: null
+  note: No service level agreement is published for either surface.
+status_page: null
+status_page_note: >-
+  Neither OSHA nor DOL operates a status page for these APIs. No status.osha.gov / status.dol.gov
+  host exists and no incident feed is published.
+support:
+  ita: https://www.osha.gov/injuryreporting/ita/help-request-form
+  dol_api_issues: https://github.com/USDepartmentofLabor/Developer/issues/new
+  dol_api_questions: https://opendata.stackexchange.com/questions/ask?tags=labor
+maintenance_signal:
+  developer_portal_changelog_last_entry: '2015-09-29'
+  ita_api_doc_changelog_last_entry: '2018-07-16'
+  sdk_repos_archived: 8
+  sdk_last_push: '2017-02-16'
+  note: >-
+    Every dated maintenance surface for these APIs stopped between 2015 and 2018, while the
+    APIs themselves remain live and regulatorily mandatory — ITA filings are required annually
+    under 29 CFR 1904.41.
+deprecated_operations: []

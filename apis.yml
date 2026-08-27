@@ -1,23 +1,30 @@
 aid: osha
 name: OSHA
 description: >-
-  Occupational Safety and Health Administration - U.S. federal agency
-  responsible for setting and enforcing workplace safety and health standards.
-  OSHA provides data APIs for accessing enforcement, inspection, and injury
-  data.
+  The Occupational Safety and Health Administration is the U.S. federal agency, part of the
+  Department of Labor, responsible for setting and enforcing workplace safety and health
+  standards. OSHA operates two very different API surfaces. The Injury Tracking Application
+  (ITA) API at www.osha.gov/oshaApi/v1 is a write channel employers are legally required to use
+  under 29 CFR 1904.41 to submit OSHA Form 300A summaries and Form 300/301 case data, secured
+  with a bearer token issued from a logged-in ITA account and backed by a separate
+  preview.osha.gov sandbox. The OSHA enforcement datasets — inspections, violations, citations,
+  accidents and injuries, roughly 90,000 inspections a year — are published as read-only tables
+  through the Department of Labor's data API. Neither surface publishes an OpenAPI: the ITA
+  contract is distributed as a PDF.
 type: Index
 accessModel:
-  pricing: freemium
-  onboarding: unknown
+  pricing: free
+  onboarding: account-required
   trial: false
   try_now: false
   public: false
-  label: Freemium
-  confidence: medium
+  label: Free
+  confidence: high
   source:
   - plans
-  generated: '2026-07-22'
-  method: derived
+  - authentication
+  generated: '2026-08-27'
+  method: searched
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/osha.png
 tags:
   - Compliance
@@ -25,40 +32,134 @@ tags:
   - Health Standards
   - Regulatory
   - Workplace Safety
+  - Federal
+  - Open Data
+  - Enforcement
+  - Occupational Health
+  - Injury Reporting
 url: >-
   https://raw.githubusercontent.com/api-evangelist/osha/refs/heads/main/apis.yml
 created: '2026-03-16'
-modified: '2026-03-16'
+modified: '2026-08-27'
 specificationVersion: '0.23'
 apis:
+  - aid: osha:osha-injury-tracking-application
+    name: OSHA Injury Tracking Application (ITA) API
+    description: >-
+      OSHA's own API for electronically submitting establishment injury and illness records —
+      Form 300A summaries and Form 300/301 case data — under 29 CFR 1904.41. Nine documented
+      operations across establishments, forms and submissions, authenticated with an
+      Authorization Bearer token read from a logged-in ITA account. Create and edit endpoints
+      accept either a single JSON object or an array, responses carry a hypermedia links array,
+      and a separate preview.osha.gov host runs the same validation rules for testing.
+    humanURL: https://www.osha.gov/injuryreporting/ita
+    baseURL: https://www.osha.gov/oshaApi/v1
+    tags:
+      - Injury Reporting
+      - Recordkeeping
+      - Form 300A
+      - Compliance
+    properties:
+      - type: Documentation
+        url: https://www.osha.gov/injuryreporting
+      - type: APIReference
+        url: https://www.osha.gov/sites/default/files/ita/documentation/osha_injury-tracking-application-api-documentation-v1.pdf
+      - type: GettingStarted
+        url: https://www.osha.gov/injuryreporting/ita
+      - type: Login
+        url: https://www.osha.gov/injuryreporting/ita
+      - type: Sandbox
+        url: https://preview.osha.gov/injuryreporting/ita
+      - type: Support
+        url: https://www.osha.gov/injuryreporting/ita/help-request-form
   - aid: osha:osha-enforcement-data
     name: OSHA Enforcement Data API
     description: >-
-      Access OSHA enforcement data including inspections, violations, and
-      penalties through the Department of Labor's API.
-    humanURL: https://enforcedata.dol.gov/
+      Read-only access to OSHA enforcement records — inspections, violations, citation history,
+      general duty clause citations, accidents, accident abstracts and accident injuries —
+      published as ten related tables through the U.S. Department of Labor's data API, keyed on
+      activity_nr and summary_nr, with limit/offset paging capped at 200 records per request.
+      Served by OSHA's parent department rather than by osha.gov.
+    humanURL: https://data.dol.gov/
+    baseURL: https://data.dol.gov/get/
     tags:
       - Enforcement
       - Inspections
       - Violations
+      - Open Data
     properties:
       - type: Documentation
-        url: https://enforcedata.dol.gov/
+        url: https://usdepartmentoflabor.github.io/Developer/health-and-safety/dol-osha-enforcement/
+      - type: DeveloperPortal
+        url: https://usdepartmentoflabor.github.io/Developer/
+      - type: GettingStarted
+        url: https://usdepartmentoflabor.github.io/Developer/beginner/
+      - type: APIReference
+        url: https://usdepartmentoflabor.github.io/Developer/experienced/
+      - type: TermsOfService
+        url: https://usdepartmentoflabor.github.io/Developer/terms-of-service/
+      - type: Support
+        url: https://github.com/USDepartmentofLabor/Developer/issues/new
 common:
-  - type: DomainSecurity
-    url: security/osha-domain-security.yml
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/osha
   - type: Website
     url: https://www.osha.gov/
   - type: Documentation
     url: https://www.osha.gov/data/
+  - type: DeveloperPortal
+    url: https://usdepartmentoflabor.github.io/Developer/
+  - type: GettingStarted
+    url: https://www.osha.gov/injuryreporting
+  - type: APIReference
+    url: https://www.osha.gov/sites/default/files/ita/documentation/osha_injury-tracking-application-api-documentation-v1.pdf
   - type: Support
     url: https://www.osha.gov/contactus/
+  - type: Blog
+    url: https://www.osha.gov/rss.xml
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/osha
+  - type: GitHubOrganization
+    url: https://github.com/USDepartmentofLabor
   - type: PrivacyPolicy
-    url: https://www.osha.gov/privacy-policy
-  - url: https://www.osha.gov/rss.xml
-    type: Blog
+    url: https://www.dol.gov/general/privacynotice
+  - type: TermsOfService
+    url: https://usdepartmentoflabor.github.io/Developer/terms-of-service/
+  - type: Login
+    url: https://www.osha.gov/injuryreporting/ita
+  - type: Authentication
+    url: authentication/osha-authentication.yml
+  - type: Conventions
+    url: conventions/osha-conventions.yml
+  - type: ErrorCatalog
+    url: errors/osha-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/osha-lifecycle.yml
+  - type: ChangeLog
+    url: changelog/osha-changelog.yml
+  - type: DataModel
+    url: data-model/osha-data-model.yml
+  - type: Conformance
+    url: conformance/osha-conformance.yml
+  - type: Sandbox
+    url: sandbox/osha-sandbox.yml
+  - type: Packages
+    url: packages/osha-packages.yml
+  - type: SDKs
+    url: packages/osha-packages.yml
+  - type: LLMsTxt
+    url: llms/osha-llms.txt
+  - type: RateLimits
+    url: rate-limits/osha-rate-limits.yml
+  - type: Plans
+    url: plans/osha-plans-pricing.yml
+  - type: FinOps
+    url: finops/osha-finops.yml
+  - type: DomainSecurity
+    url: security/osha-domain-security.yml
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-08-27'
+  status: enriched
+  artifacts_added: 12
+  pass: local-v1

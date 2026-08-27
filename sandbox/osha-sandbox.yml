@@ -1,0 +1,37 @@
+generated: '2026-08-27'
+method: searched
+source: https://www.osha.gov/sites/default/files/ita/documentation/osha_injury-tracking-application-api-documentation-v1.pdf
+note: >-
+  OSHA publishes a real, separately hosted testing environment for the Injury Tracking
+  Application API. It is a full host swap, not a mode flag or a key prefix: every call is
+  made against preview.osha.gov instead of www.osha.gov, using a token issued by the
+  preview ITA account.
+sandbox:
+  available: true
+  name: ITA testing / sandbox environment
+  console_url: https://preview.osha.gov/injuryreporting/ita
+  base_url: https://preview.osha.gov/oshaApi/v1
+  separation: host-swap
+  separation_detail: >-
+    "When testing your API on this testing/sandbox environment, you will need to use
+    preview.osha.gov for each API call rather than www.osha.gov." There are no test-vs-live
+    key prefixes and no request-level mode switch — production and test are distinct hosts
+    with distinct accounts and distinct tokens.
+  credentials: >-
+    A separate ITA account on the preview host; the bearer token is read from that account's
+    API Token page, exactly as in production.
+  data_retention: Data submitted to the preview environment is purged periodically.
+  legal_note: >-
+    OSHA states explicitly that data submitted to the preview environment does NOT satisfy an
+    employer's regulatory obligation to provide injury and illness data to OSHA.
+  test_values: []
+  test_values_note: >-
+    OSHA publishes no magic test identifiers, fixture establishments or trigger values. The
+    sandbox accepts real-shaped establishment and Form 300A payloads and runs the same
+    validation rules as production (see errors/osha-problem-types.yml).
+  time_simulation: null
+  time_simulation_note: >-
+    No test clock. The 300A submission surface is year-scoped via year_filing_for, so a
+    filing year is chosen per request rather than simulated.
+x-evidence:
+  - {url: 'https://preview.osha.gov/injuryreporting/ita', status: 200, fetched: '2026-08-27'}
