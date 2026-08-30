@@ -7,8 +7,15 @@
       "title": "",
       "saved": 0,
       "method": "feed"
+    },
+    {
+      "source": "https://www.osha.gov/contactus/",
+      "feed_url": "https://www.osha.gov/contactus/",
+      "title": "",
+      "saved": 0,
+      "method": "none"
     }
   ],
-  "fetched": "2026-08-22T20:20:02Z",
-  "post_count": 69
+  "fetched": "2026-08-30T22:33:40Z",
+  "post_count": 71
 }
