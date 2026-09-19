@@ -95,6 +95,11 @@ apis:
     baseURL: https://data.dol.gov/get/
     tags:
       - Enforcement
+      - Inspection
+      - Violations
+      - Open Data
+    tags_raw:
+      - Enforcement
       - Inspections
       - Violations
       - Open Data
