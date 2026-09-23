@@ -1,0 +1,26 @@
+# Front Door AI Index — osha — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: osha
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.osha.gov
+  final_host: www.osha.gov
+  ownership: own
+  owner: osha
+  shares_host_with:
+  - occupational-safety-and-health-administration
+  inherited_from: null
+  verdict: scored
+  score: 1
+  host_score: 1
+  density: 0.06
+  words: 16383
+  tiers:
+    agentic: 0
+    core: 0
+    model: 1
+  ambiguous: 0
+  top_terms:
+    Claude: 1
