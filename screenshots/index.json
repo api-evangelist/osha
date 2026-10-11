@@ -1,0 +1,11 @@
+[
+  {
+    "repo": "osha",
+    "captured_at": "2026-10-11T192014",
+    "source_url": "https://www.osha.gov/",
+    "source_type": "Website",
+    "file": "osha-2026-10-11T192014.png",
+    "bytes": 668846,
+    "capture": "playwright-local"
+  }
+]
