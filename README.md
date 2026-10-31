@@ -1,4 +1,4 @@
-# OSHA (osha)
+# OSHA
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,50 +64,117 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Occupational Safety and Health Administration - U.S. federal agency responsible for setting and enforcing workplace safety and health standards. OSHA provides data APIs for accessing enforcement, inspection, and injury data.
+The Occupational Safety and Health Administration is the U.S. federal agency, part of the Department of Labor, responsible for setting and enforcing workplace safety and health standards. OSHA operates two very different API surfaces. The Injury Tracking Application (ITA) API at www.osha.gov/oshaApi/v1 is a write channel employers are legally required to use under 29 CFR 1904.41 to submit OSHA Form 300A summaries and Form 300/301 case data, secured with a bearer token issued from a logged-in ITA account and backed by a separate preview.osha.gov sandbox. The OSHA enforcement datasets — inspections, violations, citations, accidents and injuries, roughly 90,000 inspections a year — are published as read-only tables through the Department of Labor's data API. Neither surface publishes an OpenAPI: the ITA contract is distributed as a PDF.
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/osha/refs/heads/main/apis.yml)
+**Areas:** Compliance · Government · Health Standards · Regulatory · Workplace Safety · Federal · Open Data · Enforcement · Occupational Health · Injury Reporting
 
-## Scope
+## OSHA on APIs.io
 
-- **Type:** Index 
-- **Position:** Consuming 
-- **Access:** 3rd-Party 
+Everything profiled for OSHA is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/osha/](https://apis.io/providers/osha/)** — or go straight to one of the APIs or properties below.
 
-## Tags:
+### APIs (2)
 
- - Workplace Safety, Compliance, Regulatory, Health Standards, Government
+- [OSHA Injury Tracking Application (ITA) API](https://apis.io/apis/osha/osha-injury-tracking-application/) — OSHA's own API for electronically submitting establishment injury and illness records — Form 300A summaries and Form 300/301 case data — under 29 CFR…
+- [OSHA Enforcement Data API](https://apis.io/apis/osha/osha-enforcement-data/) — Read-only access to OSHA enforcement records — inspections, violations, citation history, general duty clause citations, accidents, accident abstracts and…
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-03-16 
-- **Modified:** 2026-03-16 
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### MCP servers (1)
 
-### OSHA Enforcement Data API
-Access OSHA enforcement data including inspections, violations, and penalties through the Department of Labor's API.
+Model Context Protocol servers that expose the API to agents.
 
-**Human URL:** [https://enforcedata.dol.gov/](https://enforcedata.dol.gov/)
+- [osha](https://apis.io/servers/osha/osha/)
 
+#### Security (2)
 
-#### Tags:
+Authentication, trust centre, and vulnerability disclosure.
 
- - Enforcement, Inspections, Violations
+- [Osha Authentication](https://apis.io/security/osha/osha-authentication/)
+- [Osha Domain Security](https://apis.io/security/osha/osha-domain-security/)
 
-#### Properties
+#### Plans and pricing (1)
 
-- [Documentation](https://enforcedata.dol.gov/)
+Published plans, tiers and prices.
 
-## Common Properties
+- [Osha Plans Pricing](https://apis.io/plans/osha/osha-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Osha Rate Limits](https://apis.io/rate-limits/osha/osha-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Osha Finops](https://apis.io/finops/osha/osha-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.osha.gov/)
 - [Documentation](https://www.osha.gov/data/)
+- [Getting started](https://www.osha.gov/injuryreporting)
+- [API reference](https://www.osha.gov/sites/default/files/ita/documentation/osha_injury-tracking-application-api-documentation-v1.pdf)
 - [Support](https://www.osha.gov/contactus/)
-- [Privacy Policy](https://www.osha.gov/privacy-policy)
+- [Blog](https://www.osha.gov/rss.xml)
+- [Terms of service](https://usdepartmentoflabor.github.io/Developer/terms-of-service/)
+- [Privacy policy](https://www.dol.gov/general/privacynotice)
+- [GitHub](https://github.com/USDepartmentofLabor)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
+**Kin Score 34.0** — thin · rubric 0.24.0 · scored 2026-10-17
 
-**Email:** kin@apievangelist.com
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 0.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 18.4 |
+| Developer ergonomics | 71.4 |
+| Access clarity | 34.2 |
+
+**Agent readiness 7.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 24.5** — Government & Public Sector
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/osha/](https://apis.io/providers/osha/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for OSHA: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/osha/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
